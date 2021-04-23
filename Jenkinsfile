@@ -4,32 +4,25 @@ pipeline {
     
   stages {
      
-    stage("build") {
-     
+    stage("run frontend") {
       steps {
-          echo 'building the application...'
-          script {
-              def test = 2 + 2 > 3 ? 'cool' : 'not cool'
-              echo test
-            
+          echo 'executing yarn...'
+          nodejs('Node-10.17') {
+              sh 'yarn install'
           }
       }
     }
     
     
-    stage("test") {
+    stage("run backend") {
      
       steps {
-           echo 'testing the application...'
+           echo 'executing gradle...'
+           withGradle() {
+              sh './gradlew -v'
+           }
       }
     }
     
-    
-    stage("deploy") {
-     
-      steps {
-          echo 'deploying the application...'
-      }
-    }
   }
 }
